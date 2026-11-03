@@ -16,6 +16,8 @@ struct Project: Identifiable, Equatable {
     let fps: String             // "60fps"
     let size: String            // "507…"
     let thumbColor: LinearGradient   // placeholder enquanto a mídia real não chega
+
+    static func == (lhs: Project, rhs: Project) -> Bool { lhs.id == rhs.id }
 }
 
 enum SampleProjects {
@@ -41,8 +43,6 @@ enum SampleProjects {
                 duration: "00:00:01", aspect: "4:5", resolution: "1080p", fps: "60fps", size: "447…",
                 thumbColor: LinearGradient(colors: [Color(hex:"2A2A3A"), Color(hex:"4A4A5A")], startPoint: .topLeading, endPoint: .bottomTrailing)),
     ]
-
-    static func == (lhs: Project, rhs: Project) -> Bool { lhs.id == rhs.id }
 }
 
 extension Color {
