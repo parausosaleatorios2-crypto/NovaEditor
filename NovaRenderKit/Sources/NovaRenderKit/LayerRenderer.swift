@@ -57,7 +57,7 @@ public final class LayerRenderer {
         case .media:
             if let m = layer.media, let t = textureCache.texture(for: m.file) { return t }
             return textureCache.magenta
-        case .image, .video, .audio, .null, .camera, .adjustment, .light:
+        case .audio, .null, .camera, .adjustment, .light, .solid, .precomp:
             // null/camera/adjustment/light não desenham pixels diretamente
             return textureCache.transparent
         case .text:
