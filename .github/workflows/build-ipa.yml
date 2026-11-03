@@ -1,0 +1,66 @@
+name: Build Unsigned IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app || sudo xcode-select -s /Applications/Xcode_15.3.app || true
+
+      - name: Show Xcode
+        run: xcodebuild -version && swift --version
+
+      - name: Resolve Swift packages
+        run: |
+          cd NovaProjectKit && swift package resolve || true
+          cd ../NovaRenderKit && swift package resolve || true
+
+      - name: Build archive (unsigned)
+        run: |
+          set -e
+          xcodebuild \
+            -project NovaEditor.xcodeproj \
+            -scheme NovaEditor \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/NovaEditor.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" \
+            archive
+
+      - name: Package .ipa manually (unsigned)
+        run: |
+          set -e
+          cd build
+          mkdir -p Payload
+          cp -R NovaEditor.xcarchive/Products/Applications/NovaEditor.app Payload/
+          zip -qry NovaEditor-unsigned.ipa Payload
+          ls -lh NovaEditor-unsigned.ipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: NovaEditor-unsigned-ipa
+          path: build/NovaEditor-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/
+            ~/Library/Logs/DiagnosticReports
+          if-no-files-found: ignore

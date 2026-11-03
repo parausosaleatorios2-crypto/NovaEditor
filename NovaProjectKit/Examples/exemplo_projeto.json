@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "name": "Exemplo",
+  "compositions": [
+    {
+      "id": "C1",
+      "name": "Comp 1",
+      "width": 1080,
+      "height": 1920,
+      "frameRate": 30,
+      "duration": 10,
+      "layers": [
+        {
+          "id": "L1",
+          "name": "Novo nulo",
+          "type": "null",
+          "start": 0,
+          "end": 10,
+          "hidden": false,
+          "locked": false,
+          "blendMode": "normal",
+          "opacity": { "value": 1.0 },
+          "speed": 1.0,
+          "effects": [],
+          "transform": {
+            "anchor":   { "value": {"x": 0,   "y": 0}   },
+            "position": { "keyframes": [
+              {"time": 0, "value": {"x": 540, "y": 960}, "easing": "linear"},
+              {"time": 2, "value": {"x": 300, "y": 500}, "easing": "easeInOut"}
+            ]},
+            "scale":    { "value": {"x": 1,   "y": 1}   },
+            "rotation": { "value": 0 }
+          }
+        },
+        {
+          "id": "L2",
+          "name": "Camada de texto",
+          "type": "text",
+          "start": 0,
+          "end": 10,
+          "hidden": false,
+          "locked": false,
+          "blendMode": "normal",
+          "opacity": { "value": 1.0 },
+          "speed": 1.0,
+          "effects": [
+            { "id": "E1", "type": "nova.effect.glow", "name": "Glow", "parameters": {}, "hidden": false }
+          ],
+          "transform": {
+            "anchor":   { "value": {"x": 0, "y": 0} },
+            "position": { "value": {"x": 540, "y": 960} },
+            "scale":    { "value": {"x": 1, "y": 1}   },
+            "rotation": { "value": 0 }
+          },
+          "text": {
+            "text": "Nova Editor",
+            "fontName": "Inter",
+            "fontSize": 96,
+            "color": {"r": 1, "g": 1, "b": 1, "a": 1}
+          }
+        }
+      ]
+    }
+  ],
+  "assets": []
+}
