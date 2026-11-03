@@ -55,6 +55,17 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Publish as GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="build-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" \
+            --title "Unsigned build #${GITHUB_RUN_NUMBER}" \
+            --notes "Automated unsigned IPA build. Commit ${GITHUB_SHA}." \
+            build/NovaEditor-unsigned.ipa || \
+          gh release upload "$TAG" build/NovaEditor-unsigned.ipa --clobber
+
       - name: Upload build logs on failure
         if: failure()
         uses: actions/upload-artifact@v4
